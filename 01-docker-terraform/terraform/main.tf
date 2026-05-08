@@ -8,13 +8,13 @@ terraform {
 }
 
 provider "google" {
-  project = "terraform-495617"
-  region  = "us-central1"
+  project = var.project
+  region  = var.region
 }
 
 resource "google_storage_bucket" "demo-bucket" {
-  name          = "terraform-495617-demo-bucket"
-  location      = "US"
+  name          = var.gcs_bucket_name
+  location      = var.location
   force_destroy = true
   uniform_bucket_level_access = true
 
@@ -26,4 +26,29 @@ resource "google_storage_bucket" "demo-bucket" {
       type = "AbortIncompleteMultipartUpload"
     }
   }
+}
+
+
+resource "google_bigquery_dataset" "demo-dataset" {
+  dataset_id                  = var.bq_dataset_name
+  location                    = var.location
+  default_table_expiration_ms = 3600000
+
+  labels = {
+    env = "default"
+  }
+
+  access {
+    role          = "roles/bigquery.dataOwner"
+    user_by_email = google_service_account.bqowner.email
+  }
+
+  access {
+    role   = "READER"
+    domain = "hashicorp.com"
+  }
+}
+
+resource "google_service_account" "bqowner" {
+  account_id = "bqowner"
 }
