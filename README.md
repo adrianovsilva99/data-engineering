@@ -6,3 +6,4 @@ Repository created to study and practice data engineering concepts, following th
 
 - 01 - Docker and Terraform
 - 02 - Workflow Orchestration
+- 03 - Data Warehouse
