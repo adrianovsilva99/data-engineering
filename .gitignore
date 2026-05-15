@@ -265,3 +265,11 @@ terraform.rc
 # planout
 
 .terraform.lock.hcl
+
+
+.venv/
+target/
+dbt_packages/
+logs/
+profiles.yml
+.user.yml
